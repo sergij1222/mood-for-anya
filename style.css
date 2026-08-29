@@ -1,0 +1,245 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: radial-gradient(circle at top, #ffe4ec, #f7f7f7 60%);
+    overflow-x: hidden;
+}
+
+/* Контейнер */
+.container {
+    width: 100%;
+    max-width: 430px;
+    padding: 30px 22px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 30px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    position: relative;
+    z-index: 2;
+}
+
+/* Заголовок і сердечко */
+.heart {
+    font-size: 42px;
+    display: inline-block;
+    animation: heartbeat 1.5s infinite ease-in-out;
+}
+
+h1 {
+    margin: 8px 0 5px;
+    font-size: 32px;
+    color: #2c3e50;
+}
+
+.subtitle {
+    margin-top: 5px;
+    color: #777;
+    font-size: 16px;
+}
+
+/* Кнопки вибору настрою */
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.mood-btn {
+    border: none;
+    padding: 17px;
+    border-radius: 18px;
+    font-size: 18px;
+    font-weight: 600;
+    background: #f1f1f1;
+    color: #333;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.mood-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+}
+
+.mood-btn:active {
+    transform: scale(0.97);
+}
+
+.super:hover { background: #fff0a8; }
+.good:hover { background: #dff7df; }
+.normal:hover { background: #e2e8f0; }
+.bad:hover { background: #ffdede; }
+
+/* Результат */
+.result {
+    margin-top: 25px;
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.result.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Картки */
+.mood-card {
+    padding: 22px;
+    border-radius: 25px;
+    background: #fafafa;
+}
+
+.super-card { background: #fffbea; }
+.good-card { background: #f4fff4; }
+.normal-card { background: #f8f9fa; }
+.bad-card { background: #fff3f3; }
+
+.big-emoji {
+    font-size: 55px;
+    margin-bottom: 5px;
+    display: inline-block;
+    animation: floating 2.5s infinite ease-in-out;
+}
+
+.mood-card h2 {
+    margin: 8px 0 12px;
+    font-size: 24px;
+    color: #222;
+}
+
+.mood-card p {
+    line-height: 1.5;
+    color: #444;
+    margin: 10px 0;
+}
+
+.small-text {
+    font-size: 14px;
+    color: #666;
+    margin-top: 15px;
+}
+
+.mood-card img {
+    display: block;
+    width: 100%;
+    max-height: 380px;
+    object-fit: cover;
+    margin-top: 18px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    animation: photoAppear 0.6s ease-out;
+}
+
+/* Спеціальні блоки */
+.secret {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 16px;
+    background: #fff0f4;
+    color: #d94f72;
+    font-weight: bold;
+}
+
+.recommendation {
+    margin-top: 18px;
+    padding: 16px;
+    border-radius: 18px;
+    background: #fff5d6;
+    text-align: center;
+}
+
+.recommendation p {
+    margin: 6px 0 0;
+    font-weight: 600;
+}
+
+.hug {
+    font-size: 45px;
+    margin: 15px 0;
+}
+
+.hug span {
+    font-size: 14px;
+    color: #777;
+    display: block;
+    margin-top: 4px;
+}
+
+/* ========================= */
+/* АНІМАЦІЇ */
+/* ========================= */
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+
+@keyframes floating {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+@keyframes photoAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.94);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Конфеті */
+#confetti {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.confetti-piece {
+    position: absolute;
+    top: -20px;
+    width: 10px;
+    height: 14px;
+    border-radius: 2px;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    from {
+        transform: translateY(0) rotate(0deg);
+    }
+    to {
+        transform: translateY(105vh) rotate(720deg);
+    }
+}
+
+/* Мобільна адаптива */
+@media (max-width: 450px) {
+    .container {
+        padding: 25px 16px;
+    }
+    h1 {
+        font-size: 26px;
+    }
+    .mood-btn {
+        font-size: 16px;
+        padding: 15px;
+    }
+}

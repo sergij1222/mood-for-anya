@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Твій настрій ❤️</title>
+    
+    <!-- Підключаємо файл стилів CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Контейнер для конфеті -->
+    <div id="confetti"></div>
+
+    <div class="container">
+        <div class="heart">❤️</div>
+        <h1>Як твій настрій?</h1>
+        <p class="subtitle">Обери свій стан сьогодні ✨</p>
+
+        <!-- Кнопки вибору настрою -->
+        <div class="buttons">
+            <button class="mood-btn super" onclick="showMood('super')">😎 Супер клас!</button>
+            <button class="mood-btn good" onclick="showMood('good')">🙂 Все добре</button>
+            <button class="mood-btn normal" onclick="showMood('normal')">😐 Ну, таке...</button>
+            <button class="mood-btn bad" onclick="showMood('bad')">🥲 Не дуже...</button>
+        </div>
+
+        <!-- Сюди виводиться результат -->
+        <div id="result" class="result"></div>
+    </div>
+
+    <!-- Підключаємо файл JavaScript перед закриваючим тегом body -->
+    <script src="script.js"></script>
+</body>
+</html>
