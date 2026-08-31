@@ -2,7 +2,8 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Оптимізований мета-тег для ідеального відображення на iPhone без небажаного зуму -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Твій настрій ❤️</title>
     
     <!-- Підключаємо файл стилів CSS -->
@@ -29,7 +30,7 @@
             <button class="mood-btn surprise-btn" onclick="showMood('surprise')">🎁 Секретний сюрприз</button>
         </div>
 
-        <!-- Сюди виводиться результат (картка настрою) -->
+        <!-- Сюди виводиться результат (картка настрою або таймер) -->
         <div id="result" class="result"></div>
     </div>
 

@@ -1,8 +1,8 @@
-// Змінна для відстеження активного таймера
+// Змінна для керування активним таймером
 let timerInterval = null;
 
 // ==============================
-// 1. ДАНІ ДЛЯ КОЖНОГО НАСТРОЮ
+// 1. ДАНІ НАСТРОЇВ
 // ==============================
 const moodData = {
     super: {
@@ -72,7 +72,6 @@ const moodData = {
             </div>
         `
     },
-    // Оновлений секретний настрій з їжачком
     surprise: {
         emoji: "🦔",
         title: "СЕКРЕТНИЙ СЮРПРИЗ! 🎉",
@@ -82,7 +81,7 @@ const moodData = {
             Просто посміхнись, і я вже буду цьому дуже радий ❤️
         `,
         smallText: `
-            Цей маленька їжачок передає тобі свій привіт 🦔✨
+            Цей маленький їжачок передає тобі свій привіт 🦔✨
         `
     }
 };
@@ -96,19 +95,19 @@ const normalRecommendations = [
 ];
 
 // ==============================
-// 2. ГОЛОВНА ФУНКЦІЯ ПОКАЗУ
+// 2. ФУНКЦІЯ КЕРУВАННЯ ПОКАЗОМ
 // ==============================
 function showMood(mood) {
     const result = document.getElementById("result");
     if (!result || !moodData[mood]) return;
 
-    // Зупиняємо попередні таймери, якщо вони були активні
+    // Скидаємо діючий таймер при перемиканні
     if (timerInterval) {
         clearInterval(timerInterval);
         timerInterval = null;
     }
 
-    // Якщо обрано секретний сюрприз — запускаємо таймер зачекання
+    // Якщо сюрприз — запускаємо зворотний відлік
     if (mood === "surprise") {
         startSurpriseTimer();
         return;
@@ -117,10 +116,10 @@ function showMood(mood) {
     renderCard(mood);
 }
 
-// Запускає зворотний відлік для секретної кнопки
+// Запускає таймер очікування для сюрпризу
 function startSurpriseTimer() {
     const result = document.getElementById("result");
-    let countdown = 3; // Час очікування в секундах
+    let countdown = 3;
 
     result.innerHTML = `
         <div class="timer-card">
@@ -149,7 +148,7 @@ function startSurpriseTimer() {
     }, 1000);
 }
 
-// Рендеринг картки настрою
+// Відмальовка картки
 function renderCard(mood) {
     const result = document.getElementById("result");
     const data = moodData[mood];
@@ -186,7 +185,7 @@ function renderCard(mood) {
 }
 
 // ==============================
-// 3. ФУНКЦІЇ ЕФЕКТІВ ТА АНІМАЦІЙ
+// 3. ЕФЕКТИ
 // ==============================
 function triggerEffects(mood) {
     const container = document.getElementById("confetti");
@@ -197,59 +196,59 @@ function triggerEffects(mood) {
 
     if (mood === "super") {
         const colors = ["#ff6b81", "#ffda79", "#1dd1a1", "#54a0ff", "#5f27cd"];
-        for (let i = 0; i < 60; i++) {
+        for (let i = 0; i < 45; i++) {
             const piece = document.createElement("div");
             piece.classList.add("effect-item", "confetti-piece");
             piece.style.left = `${Math.random() * 100}%`;
             piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
             piece.style.animationDuration = `${Math.random() * 2 + 2}s`;
-            piece.style.animationDelay = `${Math.random() * 0.4}s`;
+            piece.style.animationDelay = `${Math.random() * 0.3}s`;
             fragment.appendChild(piece);
         }
     } else if (mood === "good") {
         const symbols = ["❤️", "💖", "✨", "🌸", "💕"];
-        for (let i = 0; i < 25; i++) {
+        for (let i = 0; i < 20; i++) {
             const piece = document.createElement("div");
             piece.classList.add("effect-item", "floating-heart");
             piece.innerText = symbols[Math.floor(Math.random() * symbols.length)];
             piece.style.left = `${Math.random() * 90 + 5}%`;
-            piece.style.fontSize = `${Math.random() * 15 + 18}px`;
+            piece.style.fontSize = `${Math.random() * 12 + 16}px`;
             piece.style.animationDuration = `${Math.random() * 2 + 2.5}s`;
-            piece.style.animationDelay = `${Math.random() * 0.5}s`;
+            piece.style.animationDelay = `${Math.random() * 0.4}s`;
             fragment.appendChild(piece);
         }
     } else if (mood === "normal") {
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 15; i++) {
             const piece = document.createElement("div");
             piece.classList.add("effect-item", "bubble");
-            const size = Math.random() * 30 + 15;
+            const size = Math.random() * 25 + 15;
             piece.style.width = `${size}px`;
             piece.style.height = `${size}px`;
             piece.style.left = `${Math.random() * 90 + 5}%`;
-            piece.style.animationDuration = `${Math.random() * 3 + 3}s`;
-            piece.style.animationDelay = `${Math.random() * 0.6}s`;
+            piece.style.animationDuration = `${Math.random() * 3 + 2.5}s`;
+            piece.style.animationDelay = `${Math.random() * 0.5}s`;
             fragment.appendChild(piece);
         }
     } else if (mood === "bad") {
         const symbols = ["⭐", "✨", "💫", "☀️"];
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 22; i++) {
             const piece = document.createElement("div");
             piece.classList.add("effect-item", "starlight");
             piece.innerText = symbols[Math.floor(Math.random() * symbols.length)];
             piece.style.left = `${Math.random() * 95}%`;
-            piece.style.fontSize = `${Math.random() * 14 + 16}px`;
+            piece.style.fontSize = `${Math.random() * 12 + 15}px`;
             piece.style.animationDuration = `${Math.random() * 2 + 2}s`;
-            piece.style.animationDelay = `${Math.random() * 0.5}s`;
+            piece.style.animationDelay = `${Math.random() * 0.4}s`;
             fragment.appendChild(piece);
         }
     } else if (mood === "surprise") {
         const symbols = ["🦔", "🎁", "✨", "💛", "🍎"];
-        for (let i = 0; i < 35; i++) {
+        for (let i = 0; i < 25; i++) {
             const piece = document.createElement("div");
             piece.classList.add("effect-item", "surprise-pop");
             piece.innerText = symbols[Math.floor(Math.random() * symbols.length)];
             piece.style.left = `${Math.random() * 90 + 5}%`;
-            piece.style.fontSize = `${Math.random() * 20 + 20}px`;
+            piece.style.fontSize = `${Math.random() * 16 + 18}px`;
             piece.style.animationDuration = `${Math.random() * 2 + 2}s`;
             piece.style.animationDelay = `${Math.random() * 0.3}s`;
             fragment.appendChild(piece);
@@ -260,5 +259,5 @@ function triggerEffects(mood) {
 
     setTimeout(() => {
         container.innerHTML = "";
-    }, 4500);
+    }, 4200);
 }
