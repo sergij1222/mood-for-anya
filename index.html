@@ -10,7 +10,7 @@
 </head>
 <body>
 
-    <!-- Контейнер для конфеті -->
+    <!-- Контейнер для анімації ефектів (конфеті, сердечок і т.д.) -->
     <div id="confetti"></div>
 
     <div class="container">
@@ -24,13 +24,16 @@
             <button class="mood-btn good" onclick="showMood('good')">🙂 Все добре</button>
             <button class="mood-btn normal" onclick="showMood('normal')">😐 Ну, таке...</button>
             <button class="mood-btn bad" onclick="showMood('bad')">🥲 Не дуже...</button>
+            
+            <!-- Секретна кнопка -->
+            <button class="mood-btn surprise-btn" onclick="showMood('surprise')">🎁 Секретний сюрприз</button>
         </div>
 
-        <!-- Сюди виводиться результат -->
+        <!-- Сюди виводиться результат (картка настрою) -->
         <div id="result" class="result"></div>
     </div>
 
-    <!-- Підключаємо файл JavaScript перед закриваючим тегом body -->
+    <!-- Підключаємо скрипт -->
     <script src="script.js"></script>
 </body>
 </html>

@@ -1,3 +1,6 @@
+// Змінна для відстеження активного таймера
+let timerInterval = null;
+
 // ==============================
 // 1. ДАНІ ДЛЯ КОЖНОГО НАСТРОЮ
 // ==============================
@@ -13,7 +16,7 @@ const moodData = {
         `,
         smallText: `
             Так тримати! Сьогодні тобі офіційно дозволено
-            бути найщасливішою людиною 😌✨
+            бути найщасливішою дівчиною 😌✨
         `
     },
     good: {
@@ -68,6 +71,19 @@ const moodData = {
                 <span>Віртуальні обійми вже виїхали.</span>
             </div>
         `
+    },
+    // Оновлений секретний настрій з їжачком
+    surprise: {
+        emoji: "🦔",
+        title: "СЕКРЕТНИЙ СЮРПРИЗ! 🎉",
+        cardClass: "surprise-card",
+        photo: "images/hedgehog.jpg",
+        body: `
+            Просто посміхнись, і я вже буду цьому дуже радий ❤️
+        `,
+        smallText: `
+            Цей маленька їжачок передає тобі свій привіт 🦔✨
+        `
     }
 };
 
@@ -86,10 +102,59 @@ function showMood(mood) {
     const result = document.getElementById("result");
     if (!result || !moodData[mood]) return;
 
+    // Зупиняємо попередні таймери, якщо вони були активні
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+
+    // Якщо обрано секретний сюрприз — запускаємо таймер зачекання
+    if (mood === "surprise") {
+        startSurpriseTimer();
+        return;
+    }
+
+    renderCard(mood);
+}
+
+// Запускає зворотний відлік для секретної кнопки
+function startSurpriseTimer() {
+    const result = document.getElementById("result");
+    let countdown = 3; // Час очікування в секундах
+
+    result.innerHTML = `
+        <div class="timer-card">
+            <p>🎁 Відкриваємо секретний подарунок...</p>
+            <div class="timer-number">${countdown}</div>
+        </div>
+    `;
+
+    result.classList.remove("show");
+    void result.offsetWidth;
+    result.classList.add("show");
+
+    timerInterval = setInterval(() => {
+        countdown--;
+        const timerNum = document.querySelector(".timer-number");
+        
+        if (timerNum) {
+            timerNum.innerText = countdown;
+        }
+
+        if (countdown <= 0) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            renderCard("surprise");
+        }
+    }, 1000);
+}
+
+// Рендеринг картки настрою
+function renderCard(mood) {
+    const result = document.getElementById("result");
     const data = moodData[mood];
     let extraHTML = data.extraContent || "";
 
-    // Випадкова рекомендація для настрою "normal"
     if (mood === "normal") {
         const randomRec = normalRecommendations[
             Math.floor(Math.random() * normalRecommendations.length)
@@ -102,7 +167,6 @@ function showMood(mood) {
         `;
     }
 
-    // Формуємо картку
     result.innerHTML = `
         <div class="mood-card ${data.cardClass}">
             <div class="big-emoji">${data.emoji}</div>
@@ -110,47 +174,90 @@ function showMood(mood) {
             <p>${data.body}</p>
             ${extraHTML}
             <p class="small-text">${data.smallText}</p>
-            <img src="${data.photo}" alt="Фото настрою" loading="lazy">
+            <img src="${data.photo}" alt="Фото настрою" loading="lazy" onerror="this.style.display='none'">
         </div>
     `;
 
-    // Перезапускаємо анімацію появи
     result.classList.remove("show");
-    void result.offsetWidth; // Примусовий reflow для плавної анімації
+    void result.offsetWidth;
     result.classList.add("show");
 
-    // Запускаємо конфеті, якщо настрій "super"
-    if (mood === "super") {
-        createConfetti();
-    }
+    triggerEffects(mood);
 }
 
 // ==============================
-// 3. ФУНКЦІЯ КОНФЕТІ
+// 3. ФУНКЦІЇ ЕФЕКТІВ ТА АНІМАЦІЙ
 // ==============================
-function createConfetti() {
+function triggerEffects(mood) {
     const container = document.getElementById("confetti");
     if (!container) return;
 
     container.innerHTML = "";
-    const colors = ["#ff6b81", "#ffda79", "#1dd1a1", "#54a0ff", "#5f27cd"];
     const fragment = document.createDocumentFragment();
 
-    for (let i = 0; i < 60; i++) {
-        const piece = document.createElement("div");
-        piece.classList.add("confetti-piece");
-
-        piece.style.left = `${Math.random() * 100}%`;
-        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        piece.style.animationDuration = `${Math.random() * 2 + 2}s`;
-        piece.style.animationDelay = `${Math.random() * 0.4}s`;
-
-        fragment.appendChild(piece);
+    if (mood === "super") {
+        const colors = ["#ff6b81", "#ffda79", "#1dd1a1", "#54a0ff", "#5f27cd"];
+        for (let i = 0; i < 60; i++) {
+            const piece = document.createElement("div");
+            piece.classList.add("effect-item", "confetti-piece");
+            piece.style.left = `${Math.random() * 100}%`;
+            piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            piece.style.animationDuration = `${Math.random() * 2 + 2}s`;
+            piece.style.animationDelay = `${Math.random() * 0.4}s`;
+            fragment.appendChild(piece);
+        }
+    } else if (mood === "good") {
+        const symbols = ["❤️", "💖", "✨", "🌸", "💕"];
+        for (let i = 0; i < 25; i++) {
+            const piece = document.createElement("div");
+            piece.classList.add("effect-item", "floating-heart");
+            piece.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+            piece.style.left = `${Math.random() * 90 + 5}%`;
+            piece.style.fontSize = `${Math.random() * 15 + 18}px`;
+            piece.style.animationDuration = `${Math.random() * 2 + 2.5}s`;
+            piece.style.animationDelay = `${Math.random() * 0.5}s`;
+            fragment.appendChild(piece);
+        }
+    } else if (mood === "normal") {
+        for (let i = 0; i < 20; i++) {
+            const piece = document.createElement("div");
+            piece.classList.add("effect-item", "bubble");
+            const size = Math.random() * 30 + 15;
+            piece.style.width = `${size}px`;
+            piece.style.height = `${size}px`;
+            piece.style.left = `${Math.random() * 90 + 5}%`;
+            piece.style.animationDuration = `${Math.random() * 3 + 3}s`;
+            piece.style.animationDelay = `${Math.random() * 0.6}s`;
+            fragment.appendChild(piece);
+        }
+    } else if (mood === "bad") {
+        const symbols = ["⭐", "✨", "💫", "☀️"];
+        for (let i = 0; i < 30; i++) {
+            const piece = document.createElement("div");
+            piece.classList.add("effect-item", "starlight");
+            piece.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+            piece.style.left = `${Math.random() * 95}%`;
+            piece.style.fontSize = `${Math.random() * 14 + 16}px`;
+            piece.style.animationDuration = `${Math.random() * 2 + 2}s`;
+            piece.style.animationDelay = `${Math.random() * 0.5}s`;
+            fragment.appendChild(piece);
+        }
+    } else if (mood === "surprise") {
+        const symbols = ["🦔", "🎁", "✨", "💛", "🍎"];
+        for (let i = 0; i < 35; i++) {
+            const piece = document.createElement("div");
+            piece.classList.add("effect-item", "surprise-pop");
+            piece.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+            piece.style.left = `${Math.random() * 90 + 5}%`;
+            piece.style.fontSize = `${Math.random() * 20 + 20}px`;
+            piece.style.animationDuration = `${Math.random() * 2 + 2}s`;
+            piece.style.animationDelay = `${Math.random() * 0.3}s`;
+            fragment.appendChild(piece);
+        }
     }
 
     container.appendChild(fragment);
 
-    // Очищаємо елементи після завершення анімації
     setTimeout(() => {
         container.innerHTML = "";
     }, 4500);
